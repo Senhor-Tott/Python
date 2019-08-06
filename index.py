@@ -1,11 +1,5 @@
+from insertNotas import *
 
-#Variáveis DEFINE
-TURNS     = 2
-CALCNOTES = 2
-
-#Variáveis Globais
-opc        = ''
-validation = False
 
 #Menu 
 def Menu():
@@ -18,7 +12,7 @@ def Menu():
     opc = input('>>> ')
 
     if(opc == '1'):
-        print('')
+        InsertNotas()
     elif(opc == '2'):
         print('')
     elif(opc == '3'):
