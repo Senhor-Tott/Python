@@ -12,7 +12,7 @@ def Menu():
     opc = input('>>> ')
 
     if(opc == '1'):
-        InsertNotas()
+        InsertNotes()
     elif(opc == '2'):
         print('')
     elif(opc == '3'):
