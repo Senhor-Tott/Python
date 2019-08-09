@@ -1,3 +1,7 @@
+"""print('\033[1;31mVermelho\033[m')
+print('\033[1;32mVerde\033[m')
+print('\033[1;33mAmarelo\033[m')
+print('\033[1;34mAzul\033[m')"""
 from insertNotes import *
 
 
