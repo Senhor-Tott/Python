@@ -28,12 +28,12 @@ try:
             Clear()
             Header()
             print()
-            print('ID ', end='')
+            print(' ID ', end='')
 
             #Exibi os Headers da Tabela
             for i in alunos.keys():
-                print(f'{i:^17}', end=' ')
-            print('\n')
+                print(f'{i:^17}', end='')
+            print()
             print('_' * 50)
 
             print()
@@ -124,11 +124,11 @@ try:
         Header()
         while True:
             soma = 0.0
-            print(soma)
+            print()
             alunos.clear()
             try:
 
-                alunos['Nome'] = str(input('Nome do Aluno: ').title())
+                alunos['Nome'] = str(input('Informe o Primeiro nome do Aluno: ').title())
 
                 if alunos['Nome'] == '':
                     alunos.clear()
@@ -202,8 +202,8 @@ try:
 
     def Header():
         print("\n")
-        print("==" * 23)
-        print("==" * 6, " Sistema de Notas", "==" * 7)
+        print("==" * 26)
+        print("==" * 8, " Sistema de Notas ", "==" * 8)
 
 except KeyboardInterrupt:
   print('\nO usuário não informou os dados')
