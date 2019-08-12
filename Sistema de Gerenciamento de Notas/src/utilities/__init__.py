@@ -9,8 +9,10 @@ try:
     alunos = dict()
     notas = list()
 
-    op = ''
+    validation = False
+    expired = False
 
+    op = ''
 
     # Limpar Terminal
 
@@ -22,6 +24,8 @@ try:
 
 
     def ListNotes():
+
+        global validation, expired
 
         # Verificando se o dicionario está vazio
         if turma != []:
@@ -74,14 +78,14 @@ try:
 
                         print('\n\t Média Final: {}'.format(round(turma[busca]["Media"], 2)))
 
-                        if turma[busca]['Media'] >= 7:
+                        if turma[busca]['Media'] >= 7 or validation == True:
                             print('\t\033[1;32m APROVADO!\033[m')
 
-                        elif (turma[busca]['Media'] >= 3) and (turma[busca]['Media'] < 7):
+                        elif (turma[busca]['Media'] >= 3) and (turma[busca]['Media'] < 7) and expired == False:
 
                             print('\t\033[1;33m RECUPERAÇÃO!\033[m')
 
-                            print(f'\t\nNota necessária para passar na Final {14 - turma[busca]["Media"]}')
+                            print(f'\t\nNota necessária para passar na Final {10 - turma[busca]["Media"]}')
 
                             op = input('\n[1] - Realizar a Prova Final\n[*] - Sair\n>>> ')
 
@@ -89,17 +93,26 @@ try:
 
                                 entrada = float(input('\nInforme a nota: '))
 
-                                # Alterando Média
-                                for i in enumerate(turma[busca]):
-                                    soma = (entrada + turma[busca]['Media']) / 2
+                                turma[busca]['Notas'].append(entrada)
 
-                                    if soma >= turma[busca]['Media']:
+                                # Alterando Média
+
+                                soma = (entrada + turma[busca]['Media']) / 2
+
+                                if soma >= turma[busca]['Media']:
+                                    if soma >= 5:
                                         turma[busca]['Media'] = 0  # Q - Segurança
                                         turma[busca]['Media'] = soma
 
-                                    break
+                                        validation = True
 
-                        else:
+                                    else:
+                                        expired = True
+
+                                else:
+                                    expired = True
+
+                        elif expired == True:
                             print('\t\033[1;31m REPROVADO!\033[m')
 
                         op = str(input('\n[*] - Sair\n>>> '))
