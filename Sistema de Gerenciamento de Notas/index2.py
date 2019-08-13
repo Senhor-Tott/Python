@@ -6,6 +6,8 @@ try:
     CALC = 3
     OPC = ''
     notas = list()
+    validation = False
+    expiration = False
 
 
     # Limpar Terminal
@@ -120,80 +122,105 @@ try:
 
     #Calculando Notas
     def calcularNotas(notas):
+
         soma = 0.0
 
         for x in range(len(notas)):
             soma += notas[x]
 
-        verificarSituacao(soma)
+        verificarSituacao(soma)            
 
 
     #Verificando a Situação do Aluno
     def verificarSituacao(value):
-        media = round(value / CALC, 1)
 
-        print('')
+        if expiration == False:
+            media = round(value / CALC, 1)
 
-        if media >= 7:
-            print(f'Média: {media}')
-            print('\n\033[1;32mAPROVADO!\033[m')
+            print('')
 
-            OPC = str(input('\n[*] - Sair\n>>> '))
+            if media >= 7:
+                print(f'Média: {media}')
+                print('\n\033[1;32mAPROVADO!\033[m')
 
-            clear()
-            menu()
+                OPC = str(input('\n[*] - Sair\n>>> '))
 
-        elif media >= 3 and media < 7:
-            print(f'Média: {media}')
-            print('\n\033[1;33mRECUPERAÇÃO!\033[m')
-
-            OPC = str(input('\n[1] - Realizar Prova Final\n[*] - Sair\n>>> '))
-
-            if OPC != '1':
                 clear()
                 menu()
+
+            elif media >= 3 and media < 7:
+                print(f'Média: {media}')
+                print('\n\033[1;33mRECUPERAÇÃO!\033[m')
+
+                OPC = str(input('\n[1] - Realizar Prova Final\n[*] - Sair\n>>> '))
+
+                if OPC != '1':
+                    clear()
+                    menu()
+                else:
+
+                    OPC = str(input('\nInforme o valor da Final\n>>> ').replace(',', '.'))
+
+                    notas.append(float(OPC))
+
+                    verificarFinal(notas, float(OPC))
+
             else:
-
-                OPC = str(input('\nInforme o valor da Final\n>>> ').replace(',', '.'))
-
-                notas.append(float(OPC))
-
-                verificarFinal(notas, float(OPC))
-
+                print(f'Média: {media}')
+                print('\n\033[1;31mREPROVADO!\033[m')
         else:
-            print(f'Média: {media}')
-            print('\n\033[1;31mREPROVADO!\033[m')
+            
+            if validation:
+                print('\n\033[1;32mAPROVADO NA FINAL!\033[m')
+
+            else:
+                print('\n\033[1;31mREPROVADO NA FINAL!\033[m')
+            
+            OPC = str(input('\n[*] - Sair\n>>> '))
+            clear()
+            menu()
 
 
     #Verificando nota Final
     def verificarFinal(notas, notaFinal):
-        soma = 0.0
 
-        for x in range(len(notas)):
-            soma += notas[x]
+        global validation, expiration
 
-        media = round(((((soma - notaFinal) / 2) * 6) + (notaFinal * 4)) / 10, 1)
+        if notaFinal != -1:
+            soma = 0.0
 
-        print('\n\033[1;32mCalculando média final...\033[m')
-        time.sleep(2)
+            for x in range(len(notas)):
+                soma += notas[x]
 
-        clear()
-        header()
-        print(f'\nMédia Final: {media}')
+            media = round(((((soma - notaFinal) / CALC) * 6) + (notaFinal * 4)) / 10, 1)
 
-        if media >= 5:
-            print('\n\033[1;32mAPROVADO!\033[m')
+            print('\n\033[1;32mCalculando média final...\033[m')
+            time.sleep(2)
 
-        else:
-            print('\n\033[1;31mREPROVADO!\033[m')
+            clear()
+            header()
+            print(f'\nMédia Final: {media}')
 
-        OPC = str(input('\n[*] - Sair'))
-        clear()
-        menu()
+            if media >= 5:
+                print('\n\033[1;32mAPROVADO NA FINAL!\033[m')
+                validation = True
+
+            else:
+                print('\n\033[1;31mREPROVADO NA FINAL!\033[m')
+                validation = False
+            
+            expiration = True
+
+
+            OPC = str(input('\n[*] - Sair\n>>> '))
+            clear()
+            menu()
+
 
 
     #Menu de Exibição
     def menu():
+        clear()
         print('\n')
         header()
         print('\n[1] - Inserir Notas')
