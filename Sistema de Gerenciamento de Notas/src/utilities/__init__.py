@@ -13,6 +13,7 @@ try:
 
 
     # Limpar Terminal
+
     def Clear():
         if os.name == 'nt':
             os.system("cls")
@@ -30,7 +31,7 @@ try:
             print()
             print(' ID ', end='')
 
-            #Exibi os Headers da Tabela
+            # Exibi os Headers da Tabela
             for i in alunos.keys():
                 print(f'{i:^17}', end='')
             print()
@@ -39,9 +40,10 @@ try:
             print()
 
             for indice, j in enumerate(turma):
-                #Exibi os IDs
+                turma[indice]['Media'] = round(turma[indice]['Media'], 1)
+                # Exibi os IDs
                 print(f'{indice:^4} ', end='')
-                #Exibi os valores
+                # Exibi os valores
                 for dado in j.values():
                     print(f'{str(dado):^16}', end='')
                 print()
@@ -60,14 +62,17 @@ try:
                     if busca >= len(turma):
                         print('\nErro')
                     else:
-                        print('=' * 36)
-                        print(f'====== Dados do Aluno, {turma[busca]["Nome"]} ======')
+                        Clear()
+                        Header()
+                        print('\n')
+                        print('=' * 52)
+                        print('=' * 14, f'Dados do Aluno, {turma[busca]["Nome"]}', 13 * '=')
                         print()
 
                         for indice, notas in enumerate(turma[busca]['Notas']):
                             print(f'     Na {indice + 1}ª avalição, fez {notas} pontos')
 
-                        print(f'\n\t Média Final: {turma[busca]["Media"]}')
+                        print('\n\t Média Final: {}'.format(round(turma[busca]["Media"], 2)))
 
                         if turma[busca]['Media'] >= 7:
                             print('\t\033[1;32m APROVADO!\033[m')
@@ -76,27 +81,31 @@ try:
 
                             print('\t\033[1;33m RECUPERAÇÃO!\033[m')
 
-                            entrada = float(input('\nInforme a nota: '))
+                            print(f'\t\nNota necessária para passar na Final {14 - turma[busca]["Media"]}')
 
-                            # Alterando Média
-                            for i in enumerate(turma[busca]):
-                                soma = (entrada + turma[busca]['Media']) / 2
+                            op = input('\n[1] - Realizar a Prova Final\n[*] - Sair\n>>> ')
 
-                                if soma >= turma[busca]['Media']:
-                                    turma[busca]['Media'] = 0  # Q - Segurança
-                                    print(f'{turma[busca]["Media"]}')
-                                    turma[busca]['Media'] = soma
+                            if op == '1':
 
-                                break
+                                entrada = float(input('\nInforme a nota: '))
+
+                                # Alterando Média
+                                for i in enumerate(turma[busca]):
+                                    soma = (entrada + turma[busca]['Media']) / 2
+
+                                    if soma >= turma[busca]['Media']:
+                                        turma[busca]['Media'] = 0  # Q - Segurança
+                                        turma[busca]['Media'] = soma
+
+                                    break
 
                         else:
-                            print('\t\033[1:31m REPROVADO!\033[m')
-
-                        print(f'{turma[busca]["Media"]}')
+                            print('\t\033[1;31m REPROVADO!\033[m')
 
                         op = str(input('\n[*] - Sair\n>>> '))
 
                         if op == '*' or op != '*':
+                            Clear()
                             Menu()
                             break
 
@@ -121,7 +130,9 @@ try:
 
     # Inserindo Notas
     def InsertNotes():
+
         Header()
+        
         while True:
             soma = 0.0
             print()
@@ -143,7 +154,9 @@ try:
                     for c in range(0, tot):
                         try:
                             entrada = str(input(f'     Valor da {c + 1}º avaliação: ')).replace(',', '.')
-                            notas.append(float(entrada))
+                            value = float(entrada)
+                            arredondar = round(value, 1)
+                            notas.append(float(arredondar))
 
                         except (ValueError, TypeError):
                             print('\n\033[1;33mTivemos um erro nos tipos de dados que você digitou!\033[m')
@@ -169,11 +182,13 @@ try:
             while True:
                 resp = str(input('Quer continuar?\n>>> '))
                 print()
+                Clear()
                 if resp in 'sn':
                     break
             if resp == 'n':
                 Menu()
                 break
+            Clear()
 
 
     def Opc(opc):
@@ -206,4 +221,4 @@ try:
         print("==" * 8, " Sistema de Notas ", "==" * 8)
 
 except KeyboardInterrupt:
-  print('\nO usuário não informou os dados')
+    print('\nO usuário não informou os dados')
