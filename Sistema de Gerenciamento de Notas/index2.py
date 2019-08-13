@@ -20,10 +20,12 @@ try:
     #Inserindo Notas
     def inserirNotas():
 
+        global expiration
+        
         try:
             if not notas:
                 header()
-
+                print('\n\033[1;33mATENÇÃO, as notas serão dividias por 3\033[m')
                 OPC = str(input('\nInforme a quantidade de avaliações realizadas\n>>> '))
 
                 for i in range(int(OPC)):
@@ -67,6 +69,8 @@ try:
                     header()
                     listarNotas(notas)
             else:
+                header()
+                print('\n\033[1;33mATENÇÃO, as notas anteriores serão apagadas!\033[m')
                 OPC = str(input('\n[1] - Inserir novas notas\n[*] - Sair\n>>> '))
 
                 if OPC != '1':
@@ -75,6 +79,9 @@ try:
                 else:
                     notas.clear()
                     clear()
+                    
+                    expiration = False
+                    
                     inserirNotas()
         except (ValueError, TypeError):
             print('\n\033[1;33mTivemos um erro nos tipos de dados que você digitou!\033[m')
@@ -143,11 +150,6 @@ try:
                 print(f'Média: {media}')
                 print('\n\033[1;32mAPROVADO!\033[m')
 
-                OPC = str(input('\n[*] - Sair\n>>> '))
-
-                clear()
-                menu()
-
             elif media >= 3 and media < 7:
                 print(f'Média: {media}')
                 print('\n\033[1;33mRECUPERAÇÃO!\033[m')
@@ -168,6 +170,12 @@ try:
             else:
                 print(f'Média: {media}')
                 print('\n\033[1;31mREPROVADO!\033[m')
+            
+            OPC = str(input('\n[*] - Sair\n>>> '))
+
+            clear()
+            menu()
+
         else:
             
             if validation:
