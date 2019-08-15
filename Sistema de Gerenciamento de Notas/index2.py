@@ -1,35 +1,33 @@
+from datetime import datetime
+import os
+import time
+
 try:
     try:
-        from datetime import datetime
-        import os
-        import time
-    
-        CALC = 3
+
         OPC = ''
         notas = list()
-        validation = False
-        expiration = False
-    
     
         # Limpar Terminal
         def clear():
+
             if os.name == 'nt':
                 os.system("cls")
             else:
                 os.system("clear")
-    
+
+
         #Inserindo Notas
         def inserirNotas():
-    
-            global expiration
             
             try:
                 if not notas:
                     header()
-                    print('\n\033[1;33mATENÇÃO, as notas serão dividias por 3\033[m')
+                    #print('\n\033[1;33mATENÇÃO, as notas serão dividias por 3\033[m')
                     OPC = str(input('\nInforme a quantidade de avaliações realizadas\n>>> '))
     
-                    if int(OPC) <= 3 and int(OPC) > 0: 
+                    #if int(OPC) <= 3 and int(OPC) > 0: 
+                    if int(OPC) > 0:
     
                         for i in range(int(OPC)):
     
@@ -42,8 +40,10 @@ try:
                                 else:
                                     if float(entrada) < 0:
                                         print('\n\033[1;31mNota menor que zero!\033[m')
+
                                     elif float(entrada) > 10:
                                         print('\n\033[1;31mNota maior que o permitido!\033[m')
+
                                     notas.clear()
     
                                     OPC = str(input('\n[1] - Inserir notas\n[*] - Sair\n>>> '))
@@ -54,6 +54,7 @@ try:
                                     else:
                                         clear()
                                         inserirNotas()
+
                             except (ValueError, TypeError):
                                 print('\n\033[1;33mTivemos um erro nos tipos de dados que você digitou!\033[m')
                                 print(f'\033[1;31m{entrada.upper()} não é um valor numérico!\033[m')
@@ -88,10 +89,8 @@ try:
                     else:
                         notas.clear()
                         clear()
-                        
-                        expiration = False
-                        
                         inserirNotas()
+
             except (ValueError, TypeError):
                 print('\n\033[1;33mTivemos um erro nos tipos de dados que você digitou!\033[m')
                 time.sleep(2)
@@ -101,10 +100,12 @@ try:
     
         #Listando Notas
         def listarNotas(notas):
+
             try:
+                clear()
+                header()
                 if not notas:
     
-                    header()
                     print('\n\033[1;31mNENHUM ALUNO OU NOTAS FORAM INSERIDOS!!\033[m')
                     time.sleep(2)
         
@@ -118,14 +119,23 @@ try:
                         menu()
         
                 else:
-                    print('\nAvaliações\t\tNotas\t\t   Data\n')
+                    print('\n\033[;1mAvaliações\t\tNotas\t\t   Data\n\033[m')
                     print('-' * 58)
         
                     dataAgora = datetime.now()
                     dataTexto = dataAgora.strftime('%d/%m/%Y %H:%M')
         
                     for x in range(len(notas)):
-                        print(f'{x + 1}\t\t\t{notas[x]}\t\t{dataTexto}')
+                        if notas[x] < 7:
+                            print(f'{x + 1}\t\t\t \033[0;31m{notas[x]}\033[m\t\t{dataTexto}')
+
+                        else:
+                            if notas[x] == 10:
+                                print(f'{x + 1}\t\t\t\033[0;32m{notas[x]}\033[m\t\t{dataTexto}')
+
+                            else:
+                                print(f'{x + 1}\t\t\t \033[0;32m{notas[x]}\033[m\t\t{dataTexto}')
+
                         print('_' * 58)
         
                     OPC = str(input('\n[1] - Situação do Aluno\n[*] - Sair\n>>> '))
@@ -143,10 +153,10 @@ try:
                 if OPC.lower() == 's':
                     print(f'\n\033[1;32mVolte Sempre!!\033[m')
                     time.sleep(2)
+
                 else:
                     clear()
                     menu()
-    
     
     
         #Calculando Notas
@@ -162,41 +172,31 @@ try:
     
         #Verificando a Situação do Aluno
         def verificarSituacao(value):
-    
-            if expiration == False:
-                media = round(value / CALC, 1)
-    
-                print('')
-    
-                if media >= 7:
-                    print(f'\033[;1mMédia: {media}\033[m')
-                    print('\n\033[1;32mAPROVADO!\033[m')
-    
-                elif media >= 3 and media < 7:
-                    print(f'Média: {media}')
-                    print('\n\033[1;33mRECUPERAÇÃO!\033[m')
-    
-                    verificarFinal(notas)
-    
-                else:
-                    print(f'Média: {media}')
-                    print('\n\033[1;31mREPROVADO!\033[m')
-                
-                OPC = str(input('\n[*] - Sair\n>>> '))
-    
-                clear()
-                menu()
+
+            media = round(value / len(notas), 1)
+            print('')
+            print(f'\033[;1mMédia: {media}\033[m')
+
+            if media >= 7:
+                print('\n\033[1;32mAPROVADO!\033[m')
+
+            elif media >= 3 and media < 7:
+                print('\n\033[1;33mRECUPERAÇÃO!\033[m')
+
+                verificarFinal(media)
+
+            else:
+                print('\n\033[1;31mREPROVADO!\033[m')
+            
+            OPC = str(input('\n[*] - Sair\n>>> '))
+            clear()
+            menu()
     
     
         #Verificando nota Final
-        def verificarFinal(notas):
-    
-            soma = 0.0
-    
-            for x in range(len(notas)):
-                soma += notas[x]
-            
-            notaAlcancada = 10 - (soma / CALC)
+        def verificarFinal(media):
+
+            notaAlcancada = 10 - (media)
             
             print(f'\nNota \033[1;91mMÍNIMA\033[m a ser tirada na Final: \033[1;92m{round(notaAlcancada, 1)}\033[m')
     
@@ -244,9 +244,7 @@ try:
             print('=' * 10, ' \033[;1mSistema de Gerenciamento de Notas\033[m ', '=' * 11)
             print('')
             print('=' * 58)
-    
             print('')
-    
     
         menu()
     
@@ -268,3 +266,5 @@ except (KeyboardInterrupt):
     header()
     print(f'\n\033[1;32mVolte Sempre!!\033[m')
     time.sleep(2)
+
+
