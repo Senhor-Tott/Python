@@ -173,9 +173,9 @@ try:
         #Verificando a Situação do Aluno
         def verificarSituacao(value):
 
-            media = round(value / len(notas), 1)
+            media = value / len(notas)
             print('')
-            print(f'\033[;1mMédia: {media}\033[m')
+            print(f'\033[;1mMédia: {round(media, 1)}\033[m')
 
             if media >= 7:
                 print('\n\033[1;32mAPROVADO!\033[m')
@@ -196,8 +196,10 @@ try:
         #Verificando nota Final
         def verificarFinal(media):
 
-            notaAlcancada = 10 - (media)
+            notaAlcancada = (50 - (media * 7)) / 3
+            #notaAlcancada = 10 - media 
             
+            #print(f'\nNota \033[1;91mMÍNIMA\033[m a ser tirada na Final: \033[1;92m{round(10 - notaAlcancada, 1)}\033[m')
             print(f'\nNota \033[1;91mMÍNIMA\033[m a ser tirada na Final: \033[1;92m{round(notaAlcancada, 1)}\033[m')
     
             OPC = str(input('\n[*] - Sair\n>>> '))
@@ -266,5 +268,3 @@ except (KeyboardInterrupt):
     header()
     print(f'\n\033[1;32mVolte Sempre!!\033[m')
     time.sleep(2)
-
-
